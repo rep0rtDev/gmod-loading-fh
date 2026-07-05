@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fazbear's Hunt - Loading</title>
+    <title>Fazbear's Hunt - Загрузка</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --blood-red: #ef4444;
             --dark-red: #991b1b;
@@ -20,7 +20,7 @@
             --black: #0a0a0a;
             --dark-gray: #171717;
         }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--black);
@@ -31,7 +31,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .noise {
             position: fixed;
             top: 0;
@@ -40,7 +40,7 @@
             height: 100%;
             pointer-events: none;
             opacity: 0.03;
-            z-index: 1;
+            z-index: 2;
             background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
         }
 
@@ -50,54 +50,35 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: #0a0a0a;
-            background-image: -webkit-radial-gradient(center, ellipse, rgba(153, 27, 27, 0.2) 0%, transparent 70%);
+            background-color: #0a0a0a;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             overflow: hidden;
         }
-        
-        .floating-shapes {
+
+        .loading-bg::after {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.35) 40%, rgba(10,10,10,0.75) 100%),
+                radial-gradient(ellipse at center, rgba(153, 27, 27, 0.25) 0%, transparent 70%);
         }
-        
-        .shape {
-            position: absolute;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: float 30s infinite ease-in-out;
+
+        .logo-corner {
+            position: fixed;
+            top: 40px;
+            left: 48px;
+            z-index: 1000;
         }
-        
-        .shape:nth-child(1) {
-            width: 1000px;
-            height: 1000px;
-            top: -500px;
-            right: -400px;
-            animation-delay: 0s;
-        }
-        
-        .shape:nth-child(2) {
-            width: 800px;
-            height: 800px;
-            bottom: -400px;
-            left: -300px;
-            animation-delay: 10s;
-        }
-        
-        .shape:nth-child(3) {
-            width: 600px;
-            height: 600px;
-            top: 20%;
-            left: 20%;
-            animation-delay: 20s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            25% { transform: translate(80px, -60px) scale(1.1) rotate(90deg); }
-            50% { transform: translate(-50px, 50px) scale(0.9) rotate(180deg); }
-            75% { transform: translate(60px, -30px) scale(1.05) rotate(270deg); }
+
+        .logo-corner img {
+            display: block;
+            width: clamp(180px, 20vw, 300px);
+            max-width: 100%;
+            height: auto;
         }
 
         .control-panel {
@@ -108,14 +89,14 @@
             display: flex;
             gap: 12px;
         }
-        
+
         .control-btn {
-            width: 56px;
-            height: 56px;
+            width: 48px;
+            height: 48px;
             background: rgba(23, 23, 23, 0.8);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(239, 68, 68, 0.2);
-            border-radius: 16px;
+            border-radius: 14px;
             color: rgba(252, 165, 165, 0.7);
             cursor: pointer;
             transition: all 0.3s ease;
@@ -127,7 +108,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .control-btn::before {
             content: '';
             position: absolute;
@@ -139,80 +120,31 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .control-btn:hover {
             border-color: rgba(239, 68, 68, 0.5);
             color: white;
             transform: translateY(-2px);
         }
-        
+
         .control-btn:hover::before {
             opacity: 1;
         }
-        
+
         .control-btn.active {
             background: rgba(239, 68, 68, 0.2);
             border-color: rgba(239, 68, 68, 0.6);
             color: var(--blood-red);
         }
-        
+
         .control-btn.active::before {
             opacity: 1;
         }
-        
-        .language-dropdown {
-            position: relative;
-        }
-        
-        .lang-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 8px;
-            background: rgba(23, 23, 23, 0.95);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(239, 68, 68, 0.2);
-            border-radius: 12px;
-            overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            min-width: 140px;
-        }
-        
-        .lang-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .lang-option {
-            padding: 12px 16px;
-            color: rgba(252, 165, 165, 0.7);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        .lang-option:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: white;
-        }
-        
-        .lang-option.active {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--blood-red);
-        }
-        
+
         .music-btn.muted {
             color: rgba(252, 165, 165, 0.4);
         }
-        
+
         .music-btn::after {
             content: '';
             position: absolute;
@@ -225,26 +157,30 @@
             opacity: 0;
             animation: pulse-music 2s infinite;
         }
-        
+
         .music-btn.active::after {
             opacity: 1;
         }
-        
+
         @keyframes pulse-music {
             0%, 100% { transform: scale(1); opacity: 0.7; }
             50% { transform: scale(1.3); opacity: 1; }
         }
-        
+
         .loading-container {
             position: relative;
             z-index: 10;
             display: flex;
-            width: 100vw;
+            align-items: center;
+            justify-content: space-between;
+            gap: 180px;
+            width: 100%;
+            max-width: 1360px;
             height: 100vh;
-            padding: 0;
-            margin: 0;
+            padding: 0 48px;
+            margin: 0 auto;
         }
-        
+
         .access-denied {
             position: fixed;
             top: 0;
@@ -258,7 +194,7 @@
             justify-content: center;
             z-index: 9999;
         }
-        
+
         .access-denied .spinner {
             width: 64px;
             height: 64px;
@@ -268,152 +204,112 @@
             animation: spin 1s linear infinite;
             margin-bottom: 24px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         .access-denied h1 {
             font-size: 2.5rem;
             font-weight: bold;
             color: #ef4444;
             margin-bottom: 16px;
         }
-        
+
         .access-denied p {
             color: rgba(254, 202, 202, 0.7);
             font-size: 1.125rem;
             margin-bottom: 8px;
         }
-        
+
         .access-denied p:last-child {
             color: rgba(239, 68, 68, 0.6);
             font-size: 0.875rem;
         }
-        
+
         .left-side {
-            flex: 1;
+            flex: 0 1 480px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            padding: 60px;
-            gap: 40px;
-            height: 100vh;
+            padding: 0;
+            gap: 28px;
         }
-        
-        .logo {
-            font-size: clamp(4rem, 8vw, 7rem);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            position: relative;
-            line-height: 0.9;
-            text-align: left;
+
+        .server-info-top {
+            width: 100%;
         }
-        
-        .logo-line:nth-child(1) {
-            background: linear-gradient(90deg, var(--blood-red), #ff6b6b, var(--blood-red));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 100%;
-            animation: gradient-shift 3s ease infinite;
-            display: block;
-        }
-        
-        .logo-line:nth-child(2) {
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
-            display: block;
-        }
-        
-        .logo::after {
-            content: 'BETA';
-            position: absolute;
-            top: -20px;
-            right: -80px;
-            font-size: 1rem;
-            background: var(--blood-red);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-        }
-        
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
+
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: rgba(239, 68, 68, 0.1);
             border: 2px solid rgba(239, 68, 68, 0.3);
-            padding: 20px 32px;
+            padding: 12px 22px;
             border-radius: 100px;
-            font-size: 1.25rem;
+            font-size: 1rem;
             color: var(--blood-red);
             animation: pulse-border 2s infinite;
             backdrop-filter: blur(10px);
             font-weight: 600;
             width: fit-content;
         }
-        
+
         @keyframes pulse-border {
             0%, 100% { border-color: rgba(239, 68, 68, 0.3); }
             50% { border-color: rgba(239, 68, 68, 0.6); }
         }
-        
+
         .pulse-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: var(--blood-red);
             border-radius: 50%;
             animation: pulse-dot 1.5s infinite;
         }
-        
+
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.6; transform: scale(1.3); }
         }
-        
+
         .progress-container {
             width: 100%;
             max-width: 600px;
         }
-        
+
         .progress-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
-        
+
         .progress-text {
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: white;
-            min-width: 280px;
-            max-width: 280px;
+            min-width: 240px;
+            max-width: 240px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-        
+
         .progress-percent {
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 900;
             color: var(--blood-red);
-            min-width: 50px;
+            min-width: 46px;
             text-align: right;
         }
-        
+
         .progress-bar {
             width: 100%;
-            height: 16px;
+            height: 12px;
             background: rgba(23, 23, 23, 0.8);
             border-radius: 100px;
             overflow: hidden;
@@ -421,7 +317,7 @@
             backdrop-filter: blur(10px);
             border: 2px solid rgba(239, 68, 68, 0.2);
         }
-        
+
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--blood-red), #ff6b6b);
@@ -431,7 +327,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .progress-fill::after {
             content: '';
             position: absolute;
@@ -443,102 +339,84 @@
             transform: translateX(-100%);
             animation: progress-shine 2s infinite;
         }
-        
+
         @keyframes progress-shine {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(200%); }
         }
-        
+
         .loading-message {
-            font-size: 1.4rem;
+            font-size: 1.05rem;
             color: rgba(252, 165, 165, 0.8);
             line-height: 1.4;
             font-weight: 500;
             max-width: 600px;
-            min-height: 70px;
+            min-height: 52px;
         }
-        
+
         .right-side {
-            flex: 1;
+            flex: 0 1 460px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: stretch;
-            padding: 60px;
-            gap: 32px;
-            height: 100vh;
+            padding: 0;
+            gap: 20px;
             overflow: hidden;
         }
-        
+
         .info-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
         }
-        
+
         .section-title {
-            font-size: 1.75rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: white;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        
+
         .info-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 12px;
         }
-        
+
         .info-card {
             background: rgba(23, 23, 23, 0.7);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(239, 68, 68, 0.15);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 16px 20px;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
-            height: 100px;
+            height: 76px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        
-        .info-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--blood-red), transparent);
-            animation: scan 4s linear infinite;
-        }
-        
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
+
         .info-card:hover {
-            transform: translateY(-4px);
             border-color: rgba(239, 68, 68, 0.3);
             background: rgba(23, 23, 23, 0.8);
         }
-        
+
         .info-title {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: rgba(252, 165, 165, 0.6);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
-        
+
         .info-content {
-            font-size: 1.3rem;
+            font-size: 1.05rem;
             color: white;
             font-weight: 700;
             min-width: 120px;
@@ -547,47 +425,37 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-        
+
         .staff-cards {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            height: 280px;
-            overflow-y: hidden;
-            overflow-x: hidden;
+            gap: 8px;
             width: 100%;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
-        
-        .staff-cards::-webkit-scrollbar {
-            display: none;
-        }
-        
+
         .staff-card {
             background: rgba(23, 23, 23, 0.7);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(239, 68, 68, 0.15);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             transition: all 0.3s ease;
-            min-height: 80px;
             width: 100%;
             max-width: 100%;
             flex-shrink: 0;
         }
-        
+
         .staff-card:hover {
             border-color: rgba(239, 68, 68, 0.3);
         }
-        
+
         .staff-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1));
             display: flex;
             align-items: center;
@@ -595,8 +463,9 @@
             font-weight: 600;
             color: white;
             flex-shrink: 0;
+            object-fit: cover;
         }
-        
+
         .staff-info {
             flex: 1;
             display: flex;
@@ -605,184 +474,182 @@
             min-width: 0;
             overflow: hidden;
         }
-        
+
         .staff-name {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: white;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
+
         .staff-role {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: rgba(252, 165, 165, 0.6);
             font-weight: 500;
         }
-        
+
         .rules-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            height: 180px;
-            overflow-y: hidden;
-            overflow-x: hidden;
+            gap: 8px;
             width: 100%;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
-        
-        .rules-list::-webkit-scrollbar {
-            display: none;
-        }
-        
+
         .rule-item {
             display: flex;
-            align-items: center;
-            gap: 16px;
+            align-items: flex-start;
+            gap: 14px;
             background: rgba(10, 10, 10, 0.4);
-            padding: 16px 20px;
-            border-radius: 12px;
+            padding: 9px 16px;
+            border-radius: 10px;
             border-left: 4px solid transparent;
             transition: all 0.3s ease;
-            min-height: 70px;
             width: 100%;
             max-width: 100%;
             flex-shrink: 0;
         }
-        
+
         .rule-item:hover {
             border-left-color: var(--blood-red);
             background: rgba(239, 68, 68, 0.1);
         }
-        
+
         .rule-number {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--blood-red), #ff6b6b);
-            border-radius: 8px;
+            width: 24px;
+            height: 24px;
+            background: #EE3131;
+            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: white;
             flex-shrink: 0;
         }
-        
+
         .rule-text {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: rgba(252, 165, 165, 0.8);
             font-weight: 500;
             line-height: 1.3;
             flex: 1;
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
-        
+
         .bottom-info {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 40px;
-            font-size: 1.1rem;
+            gap: 28px;
+            font-size: 0.9rem;
             color: rgba(252, 165, 165, 0.6);
             z-index: 100;
             white-space: nowrap;
             font-weight: 500;
             background: rgba(10, 10, 10, 0.8);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 100px;
             backdrop-filter: blur(10px);
         }
-        
+
         .bottom-info a {
             color: var(--light-red);
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        
+
         .bottom-info a:hover {
             color: var(--blood-red);
         }
-        
+
         @media (max-width: 1200px) {
+            .logo-corner {
+                position: static;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 8px;
+            }
+
             .loading-container {
                 flex-direction: column;
+                gap: 48px;
+                max-width: 560px;
+                height: auto;
+                min-height: 100vh;
+                padding: 100px 40px 60px;
+                justify-content: center;
             }
-            
+
             .left-side,
             .right-side {
                 flex: none;
-                height: 50vh;
-                padding: 40px;
+                width: 100%;
             }
-            
+
             .left-side {
                 align-items: center;
                 text-align: center;
             }
-            
+
+            .server-info-top .info-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .info-cards {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+
             .control-panel {
                 top: 20px;
                 right: 20px;
             }
-            
+
             .control-btn {
                 width: 48px;
                 height: 48px;
                 font-size: 1rem;
             }
         }
-        
+
         @media (max-width: 768px) {
             .left-side,
             .right-side {
                 padding: 30px 20px;
             }
-            
-            .logo {
-                font-size: clamp(3rem, 10vw, 5rem);
+
+            .logo-corner img {
+                width: clamp(180px, 55vw, 280px);
             }
-            
-            .logo::after {
-                right: -40px;
-                font-size: 0.75rem;
-                top: -15px;
-            }
-            
+
             .progress-text {
                 min-width: 200px;
                 max-width: 200px;
                 font-size: 1.2rem;
             }
-            
+
             .info-cards {
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
-            
+
             .info-card {
                 padding: 16px;
                 height: 80px;
             }
-            
+
             .staff-card,
             .rule-item {
-                padding: 16px;
-                min-height: 70px;
+                padding: 14px 16px;
+                min-height: auto;
             }
-            
+
             .bottom-info {
                 flex-direction: column;
                 gap: 12px;
@@ -790,32 +657,32 @@
                 font-size: 1rem;
                 padding: 16px;
             }
-            
+
             .control-panel {
                 top: 15px;
                 right: 15px;
                 gap: 8px;
             }
-            
+
             .control-btn {
                 width: 44px;
                 height: 44px;
                 font-size: 0.9rem;
             }
         }
-        
+
         @media (max-width: 480px) {
             .status-badge {
                 font-size: 1rem;
                 padding: 16px 24px;
             }
-            
+
             .progress-text {
                 min-width: 150px;
                 max-width: 150px;
                 font-size: 1rem;
             }
-            
+
             .info-cards {
                 grid-template-columns: 1fr;
             }
@@ -824,122 +691,111 @@
 </head>
 <body>
     <div class="noise"></div>
-    
-    <div class="loading-bg">
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-    </div>
+
+    <div class="loading-bg"></div>
 
     <div class="access-denied" id="accessDenied">
         <div class="spinner"></div>
-        <h1>Access Denied</h1>
-        <p>This loading screen is only accessible from Garry's Mod</p>
-        <p>Please connect through the game client</p>
+        <h1>Доступ запрещён</h1>
+        <p>Этот экран загрузки доступен только из Garry's Mod</p>
+        <p>Пожалуйста, подключитесь через игровой клиент</p>
+    </div>
+
+    <div class="logo-corner">
+        <img src="logo.png" alt="Fazbear's Hunt">
     </div>
 
     <div class="control-panel">
-        <div class="language-dropdown">
-            <button class="control-btn" id="lang-btn" title="Change Language">EN</button>
-            <div class="lang-menu" id="lang-menu">
-                <div class="lang-option active" data-lang="en">🇺🇸 English</div>
-                <div class="lang-option" data-lang="ru">🇷🇺 Русский</div>
-            </div>
-        </div>
-        <button class="control-btn music-btn active" id="music-btn" title="Toggle Background Music">♫</button>
+        <button class="control-btn music-btn active" id="music-btn" title="Вкл/выкл музыку">♫</button>
     </div>
 
     <div class="loading-container" id="loadingContainer">
         <div class="left-side">
-            <div class="logo">
-                <span class="logo-line">FAZBEAR'S</span>
-                <span class="logo-line">HUNT</span>
+            <div class="server-info-top info-section">
+                <h3 class="section-title">Информация о сервере</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-title">Игроки</div>
+                        <div class="info-content" id="players-count">0/32</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-title">Карта</div>
+                        <div class="info-content" id="map-name">Загрузка...</div>
+                    </div>
+                </div>
             </div>
-
             <div class="status-badge">
                 <div class="pulse-dot"></div>
-                <span id="status-badge-text" data-text="loading_assets">Loading Game Assets</span>
+                <span id="status-badge-text">Загрузка игровых ресурсов</span>
             </div>
-
             <div class="progress-container">
                 <div class="progress-info">
-                    <span class="progress-text" id="progress-text" data-text="initializing">Initializing...</span>
+                    <span class="progress-text" id="progress-text">Инициализация...</span>
                     <span class="progress-percent" id="progress-percent">0%</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
             </div>
-
-            <div class="loading-message" id="loading-message" data-text="welcome_message">
-                Welcome to the nightmare.<br>Please wait while we prepare your horror experience...
+            <div class="loading-message" id="loading-message">
+                Добро пожаловать в кошмар.<br>Подождите, пока мы подготовим ваши ужасы...
             </div>
         </div>
-
         <div class="right-side">
             <div class="info-section">
-                <h3 class="section-title" data-text="server_info">Server Info</h3>
-                <div class="info-cards">
-                    <div class="info-card">
-                        <div class="info-title" data-text="players">Players</div>
-                        <div class="info-content" id="players-count">0/32</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-title" data-text="map">Map</div>
-                        <div class="info-content" id="map-name">Loading...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3 class="section-title" data-text="staff_team">Our Staff Team</h3>
-                <div class="staff-cards" id="staff-scroll">
+                <h3 class="section-title">Наша команда</h3>
+                <div class="staff-cards">
                     <div class="staff-card">
                         <img src="avatars/sergeant_avatar.jpg" class="staff-avatar">
                         <div class="staff-info">
                             <div class="staff-name">sergeant</div>
-                            <div class="staff-role" data-text="founder_admin">Founder & Admin</div>
+                            <div class="staff-role">Основатель</div>
                         </div>
                     </div>
                     <div class="staff-card">
-                        <img src="avatars/rep0rt_avatar.jpg" class="staff-avatar">
+                        <img src="avatars/muff_avatar.jpg" class="staff-avatar">
                         <div class="staff-info">
-                            <div class="staff-name">rep0rt</div>
-                            <div class="staff-role" data-text="host_admin">Host & Admin</div>
+                            <div class="staff-name">muff</div>
+                            <div class="staff-role">Админ</div>
                         </div>
                     </div>
                     <div class="staff-card">
-                        <img src="avatars/stayuvafk_avatar.jpg" class="staff-avatar">
+                        <img src="avatars/dmb_avatar.jpg" class="staff-avatar">
                         <div class="staff-info">
-                            <div class="staff-name">СТАЮ В АФК</div>
-                            <div class="staff-role" data-text="admin">Admin</div>
+                            <div class="staff-name">snemov</div>
+                            <div class="staff-role">Модератор · в тюрьме</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="info-section">
-                <h3 class="section-title" data-text="rules">Our Rules</h3>
-                <div class="rules-list" id="rules-scroll">
+                <h3 class="section-title">Наши правила</h3>
+                <div class="rules-list">
                     <div class="rule-item">
                         <div class="rule-number">1</div>
-                        <div class="rule-text" data-text="rule_1">No hard feelings, just have fun!</div>
+                        <div class="rule-text">Оскорбления, угрозы, травля и токсичное поведение запрещены.</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-number">2</div>
-                        <div class="rule-text" data-text="rule_2">No voice/text spam.</div>
+                        <div class="rule-text">Запрещена дискриминация в любом виде (национальность, раса, пол, ориентация, религия и т.д.).</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-number">3</div>
-                        <div class="rule-text" data-text="rule_3">Listen to admins.</div>
+                        <div class="rule-text">Запрещена реклама / NSFW.</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-number">4</div>
-                        <div class="rule-text" data-text="rule_4">No advertising other servers.</div>
+                        <div class="rule-text">Запрещены деаноны, распространение личной информации / выдача себя за администрацию.</div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">5</div>
+                        <div class="rule-text">Запрещён багоюз, который сделает игру против вас, для аниматроников, невозможной.</div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">6</div>
+                        <div class="rule-text">Запрещён излишний спам / флуд в голосовой чат.</div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -949,82 +805,15 @@
         <span>•</span>
         <span>fazbearshunt.com</span>
         <span>•</span>
-        <span data-text="follow_rules">Follow the rules for the best experience</span>
+        <span>Соблюдайте правила для лучшего опыта игры</span>
     </div>
 
-    <audio id="background-music" loop preload="auto" style="display: none;">
-        <source src="loading-music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="background-music" preload="auto" style="display: none;"></audio>
 
     <script>
-        const translations = {
-            en: {
-                loading_assets: "Loading Game Assets",
-                initializing: "Initializing...",
-                loading_workshop: "Loading workshop content...",
-                connecting_server: "Connecting to server...",
-                syncing_data: "Synchronizing game data...",
-                loading_map: "Loading map assets...",
-                spawning_animatronics: "Spawning animatronics...",
-                final_preparations: "Final preparations...",
-                ready: "Ready!",
-                welcome_message: "Welcome to the nightmare.<br>Please wait while we prepare your horror experience...",
-                workshop_message: "Downloading custom maps and models from Steam Workshop...",
-                connecting_message: "Establishing connection to Fazbear's Hunt servers...",
-                syncing_message: "Syncing your player data and achievements with our database...",
-                map_message: "Preparing the pizzeria environment for your arrival...",
-                animatronics_message: "The animatronics are awakening. Be prepared...",
-                final_message: "Almost ready! The hunt is about to begin...",
-                ready_message: "Welcome to Fazbear's Hunt!<br>Survive if you can...",
-                server_info: "Server Info",
-                players: "Players",
-                map: "Map",
-                staff_team: "Our Staff Team",
-                founder_admin: "Founder & Admin",
-                host_admin: "Host & Admin",
-                admin: "Admin",
-                rules: "Our Rules",
-                rule_1: "No hard feelings, just have fun!",
-                rule_2: "No voice/text spam.",
-                rule_3: "Listen to the admins.",
-                rule_4: "No advertising other servers.",
-                follow_rules: "Follow the rules for the best experience"
-            },
-            ru: {
-                loading_assets: "Загрузка игровых ресурсов",
-                initializing: "Инициализация...",
-                loading_workshop: "Загрузка контента мастерской...",
-                connecting_server: "Подключение к серверу...",
-                syncing_data: "Синхронизация игровых данных...",
-                loading_map: "Загрузка карты...",
-                spawning_animatronics: "Создание аниматроников...",
-                final_preparations: "Финальная подготовка...",
-                ready: "Готово!",
-                welcome_message: "Добро пожаловать в кошмар.<br>Подождите, пока мы подготовим ваши ужасы...",
-                workshop_message: "Загрузка карт и моделей из Steam Workshop...",
-                connecting_message: "Установка соединения с серверами Fazbear's Hunt...",
-                syncing_message: "Синхронизация ваших данных и достижений...",
-                map_message: "Подготовка окружения пиццерии для вашего прибытия...",
-                animatronics_message: "Аниматроники пробуждаются. Будьте готовы...",
-                final_message: "Почти готово! Охота вот-вот начнется...",
-                ready_message: "Добро пожаловать в Fazbear's Hunt!<br>Выживайте, если сможете...",
-                server_info: "Информация о сервере",
-                players: "Игроки",
-                map: "Карта",
-                staff_team: "Наша команда",
-                founder_admin: "Основатель и Админ",
-                host_admin: "Хост и Админ",
-                admin: "Админ",
-                rules: "Наши правила",
-                rule_1: "Без обид, просто получайте удовольствие!",
-                rule_2: "Не спамьте голосом/текстом.",
-                rule_3: "Слушайте администраторов.",
-                rule_4: "Не рекламируйте другие серверы.",
-                follow_rules: "Соблюдайте правила для лучшего опыта игры"
-            }
-        };
+        const STATUS_ENDPOINT = "https://check.fazbearshunt.com/server_status";
+        const STATUS_POLL_MS = 10000;
 
-        let currentLang = 'en';
         let musicEnabled = true;
         let backgroundMusic = null;
         let isGModAvailable = null;
@@ -1032,62 +821,55 @@
         let filesNeeded = 0;
         let filesTotal = 0;
         let filesDownloaded = 0;
+        let currentPlayers = 0;
+        let playersKnown = false;
         let serverInfo = {
             name: "Fazbear's Hunt",
             gamemode: "Fazbear's Hunt",
-            map: "Loading...",
+            map: "Загрузка...",
             maxPlayers: 32
         };
 
-        function initLanguageSwitcher() {
-            const langBtn = document.getElementById('lang-btn');
-            const langMenu = document.getElementById('lang-menu');
-            const langOptions = langMenu.querySelectorAll('.lang-option');
+        const musicTracks = ['music1.mp3', 'music2.mp3'];
+        let playlist = [];
+        let playlistIndex = 0;
 
-            langBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                langMenu.classList.toggle('show');
-            });
-
-            document.addEventListener('click', () => {
-                langMenu.classList.remove('show');
-            });
-
-            langOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.dataset.lang;
-                    if (lang !== currentLang) {
-                        switchLanguage(lang);
-
-                        langOptions.forEach(opt => opt.classList.remove('active'));
-                        option.classList.add('active');
-
-                        langBtn.textContent = lang.toUpperCase();
-                    }
-                    langMenu.classList.remove('show');
-                });
-            });
+        function shuffle(arr) {
+            const a = arr.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
         }
 
-        function switchLanguage(lang) {
-            currentLang = lang;
-            const texts = translations[lang];
-
-            document.querySelectorAll('[data-text]').forEach(element => {
-                const key = element.dataset.text;
-                if (texts[key]) {
-                    if (element.innerHTML.includes('<br>')) {
-                        element.innerHTML = texts[key];
-                    } else {
-                        element.textContent = texts[key];
-                    }
-                }
-            });
+        function buildPlaylist() {
+            playlist = shuffle(musicTracks);
+            playlistIndex = 0;
         }
 
-        function initMusicToggle() {
+        function playCurrentTrack() {
+            if (!backgroundMusic || !musicEnabled) return;
+            backgroundMusic.src = playlist[playlistIndex];
+            backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано браузером"));
+        }
+
+        function nextTrack() {
+            playlistIndex++;
+            if (playlistIndex >= playlist.length) {
+                buildPlaylist();
+            }
+            playCurrentTrack();
+        }
+
+        function initMusic() {
             const musicBtn = document.getElementById('music-btn');
             backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.volume = 0.3;
+
+            buildPlaylist();
+
+            backgroundMusic.addEventListener('ended', nextTrack);
 
             musicBtn.addEventListener('click', () => {
                 if (musicEnabled) {
@@ -1096,22 +878,19 @@
                     musicBtn.classList.add('muted');
                     musicEnabled = false;
                 } else {
-                    backgroundMusic.play().catch(e => console.log("Audio play failed:", e));
+                    musicEnabled = true;
                     musicBtn.classList.add('active');
                     musicBtn.classList.remove('muted');
-                    musicEnabled = true;
+                    if (!backgroundMusic.src) {
+                        playCurrentTrack();
+                    } else {
+                        backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
+                    }
                 }
             });
 
-            backgroundMusic.volume = 0.3;
             setTimeout(() => {
-                if (musicEnabled) {
-                    backgroundMusic.play().then(() => {
-                        musicBtn.textContent = '♫';
-                    }).catch(e => {
-                        console.log("Audio autoplay blocked by browser");
-                    });
-                }
+                if (musicEnabled) playCurrentTrack();
             }, 1000);
         }
 
@@ -1119,7 +898,6 @@
             loadingProgress = Math.max(loadingProgress, progress);
             const progressFill = document.getElementById('progress-fill');
             const progressPercent = document.getElementById('progress-percent');
-            
             progressFill.style.width = loadingProgress + '%';
             progressPercent.textContent = Math.floor(loadingProgress) + '%';
         }
@@ -1128,7 +906,6 @@
             const progressText = document.getElementById('progress-text');
             const loadingMessage = document.getElementById('loading-message');
             const statusBadgeText = document.getElementById('status-badge-text');
-            
             if (progressText) progressText.textContent = text;
             if (loadingMessage && message) loadingMessage.innerHTML = message;
             if (statusBadgeText) statusBadgeText.textContent = text;
@@ -1137,14 +914,34 @@
         function updateServerInfo() {
             const mapName = document.getElementById('map-name');
             const playersCount = document.getElementById('players-count');
-            
             if (mapName && serverInfo.map) {
                 mapName.textContent = serverInfo.map;
             }
-            
             if (playersCount && serverInfo.maxPlayers) {
-                playersCount.textContent = `${currentPlayers}/${serverInfo.maxPlayers}`;
+                playersCount.textContent = playersKnown
+                    ? `${currentPlayers}/${serverInfo.maxPlayers}`
+                    : `—/${serverInfo.maxPlayers}`;
             }
+        }
+
+        function fetchPlayerCount() {
+            if (!STATUS_ENDPOINT) return;
+            fetch(STATUS_ENDPOINT, { cache: "no-store" })
+                .then(r => r.ok ? r.json() : Promise.reject(r.status))
+                .then(data => {
+                    if (typeof data.players === "number") {
+                        currentPlayers = data.players;
+                        playersKnown = true;
+                    }
+                    if (typeof data.maxplayers === "number" && data.maxplayers > 0) {
+                        serverInfo.maxPlayers = data.maxplayers;
+                    }
+                    if (typeof data.map === "string" && data.map) {
+                        serverInfo.map = data.map;
+                    }
+                    updateServerInfo();
+                })
+                .catch(e => console.log("Не удалось получить онлайн сервера:", e));
         }
 
         function checkGModAPI() {
@@ -1156,17 +953,16 @@
                 window.location.search.includes("gmod") ||
                 window.location.protocol === "gmod:"
             );
-
             if (hasGModAPI) {
-                console.log("GMod API detected");
+                console.log("GMod API обнаружен");
                 isGModAvailable = true;
                 return true;
             } else {
-                console.log("GMod API not detected, starting timeout");
+                console.log("GMod API не обнаружен, запуск таймаута");
                 setTimeout(() => {
                     const recheckGMod = !!(window.gmod || window.GameDetails);
                     if (!recheckGMod) {
-                        console.log("GMod API timeout - direct access detected");
+                        console.log("Таймаут GMod API — прямой доступ");
                         isGModAvailable = false;
                         showAccessDenied();
                     } else {
@@ -1182,161 +978,103 @@
             document.getElementById('accessDenied').style.display = 'flex';
         }
 
-        function createAutoScroll(elementId, duration = 8000) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-
-            let isScrollingDown = true;
-            let startTime = null;
-            let startScrollTop = 0;
-            let targetScrollTop = 0;
-
-            function getMaxScroll() {
-                return element.scrollHeight - element.clientHeight;
-            }
-
-            function animate(currentTime) {
-                if (!startTime) {
-                    startTime = currentTime;
-                    startScrollTop = element.scrollTop;
-                    targetScrollTop = isScrollingDown ? getMaxScroll() : 0;
-                }
-
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                const easeInOutCubic = progress < 0.5 
-                    ? 4 * progress * progress * progress 
-                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-                const currentScroll = startScrollTop + (targetScrollTop - startScrollTop) * easeInOutCubic;
-                element.scrollTop = currentScroll;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    setTimeout(() => {
-                        isScrollingDown = !isScrollingDown;
-                        startTime = null;
-                        requestAnimationFrame(animate);
-                    }, 2000);
-                }
-            }
-
-            setTimeout(() => {
-                requestAnimationFrame(animate);
-            }, 1000);
-        }
-
         window.GameDetails = function(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            console.log("GMod GameDetails received:", {
-                servername, serverurl, mapname, maxplayers, steamid, gamemode
-            });
-
+            console.log("GMod GameDetails:", { servername, serverurl, mapname, maxplayers, steamid, gamemode });
             serverInfo = {
                 name: servername,
                 gamemode: gamemode,
                 map: mapname,
                 maxPlayers: maxplayers
             };
-
             isGModAvailable = true;
             updateServerInfo();
         };
 
         window.SetFilesNeeded = function(needed) {
-            console.log("Files needed:", needed);
+            console.log("Требуется файлов:", needed);
             filesNeeded = needed;
             filesTotal = needed;
             updateProgress(5);
-            const texts = translations[currentLang];
-            updateStatusText(texts.loading_workshop, texts.workshop_message);
+            updateStatusText("Загрузка контента мастерской...", "Загрузка карт и моделей из Steam Workshop...");
             isGModAvailable = true;
         };
 
         window.SetFilesTotal = function(total) {
-            console.log("Files total:", total);
+            console.log("Всего файлов:", total);
             filesTotal = total;
             updateProgress(10);
-            const texts = translations[currentLang];
-            updateStatusText(`Found ${total} files to download...`, texts.workshop_message);
+            updateStatusText(`Найдено ${total} файлов для загрузки...`, "Загрузка карт и моделей из Steam Workshop...");
             isGModAvailable = true;
         };
 
         window.DownloadingFile = function(file) {
-            console.log("Downloading file:", file);
+            console.log("Загрузка файла:", file);
             filesDownloaded++;
-
             if (filesTotal > 0) {
                 const fileProgress = 10 + (filesDownloaded / filesTotal) * 70;
                 updateProgress(fileProgress);
-                updateStatusText(`Downloading ${file}... (${filesDownloaded}/${filesTotal})`, null);
+                updateStatusText(`Загрузка ${file}... (${filesDownloaded}/${filesTotal})`, null);
             }
-
             isGModAvailable = true;
         };
 
         window.SetStatusChanged = function(newStatus) {
-            console.log("Status changed:", newStatus);
-            const texts = translations[currentLang];
-            
+            console.log("Статус изменён:", newStatus);
             if (newStatus.includes("Retrieving server info")) {
                 updateProgress(15);
-                updateStatusText(texts.connecting_server, texts.connecting_message);
+                updateStatusText("Подключение к серверу...", "Установка соединения с серверами Fazbear's Hunt...");
             } else if (newStatus.includes("Parsing game info")) {
                 updateProgress(25);
-                updateStatusText(texts.syncing_data, texts.syncing_message);
+                updateStatusText("Синхронизация игровых данных...", "Синхронизация ваших данных и достижений...");
             } else if (newStatus.includes("Requesting lua files")) {
                 updateProgress(35);
-                updateStatusText(texts.loading_map, texts.map_message);
+                updateStatusText("Загрузка карты...", "Подготовка окружения пиццерии для вашего прибытия...");
             } else if (newStatus.includes("Checking for missing files")) {
                 updateProgress(45);
-                updateStatusText(texts.loading_workshop, texts.workshop_message);
+                updateStatusText("Загрузка контента мастерской...", "Загрузка карт и моделей из Steam Workshop...");
             } else if (newStatus.includes("Workshop complete")) {
                 updateProgress(55);
-                updateStatusText(texts.spawning_animatronics, texts.animatronics_message);
+                updateStatusText("Создание аниматроников...", "Аниматроники пробуждаются. Будьте готовы...");
             } else if (newStatus.includes("Starting Lua")) {
                 updateProgress(65);
-                updateStatusText(texts.spawning_animatronics, texts.animatronics_message);
+                updateStatusText("Создание аниматроников...", "Аниматроники пробуждаются. Будьте готовы...");
             } else if (newStatus.includes("Lua cache")) {
                 updateProgress(75);
-                updateStatusText(texts.final_preparations, texts.final_message);
+                updateStatusText("Финальная подготовка...", "Почти готово! Охота вот-вот начнется...");
             } else if (newStatus.includes("Sending client info")) {
                 updateProgress(85);
-                updateStatusText(texts.final_preparations, texts.final_message);
+                updateStatusText("Финальная подготовка...", "Почти готово! Охота вот-вот начнется...");
             } else if (newStatus.includes("Spawning")) {
                 updateProgress(95);
-                updateStatusText(texts.ready, texts.ready_message);
+                updateStatusText("Готово!", "Добро пожаловать в Fazbear's Hunt!<br>Выживайте, если сможете...");
             } else if (newStatus.includes("Ready") || newStatus.includes("Complete")) {
                 updateProgress(100);
-                updateStatusText(texts.ready, texts.ready_message);
+                updateStatusText("Готово!", "Добро пожаловать в Fazbear's Hunt!<br>Выживайте, если сможете...");
             } else {
                 updateStatusText(newStatus, null);
                 const progressMatch = newStatus.match(/(\d+)%/);
                 if (progressMatch) {
-                    const progress = parseInt(progressMatch[1]);
-                    updateProgress(progress);
+                    updateProgress(parseInt(progressMatch[1]));
                 }
             }
-
             isGModAvailable = true;
         };
 
         window.addEventListener('DOMContentLoaded', function() {
             checkGModAPI();
-            
-            initLanguageSwitcher();
-            
-            initMusicToggle();
-            
-            createAutoScroll('staff-scroll', 8000);
-            createAutoScroll('rules-scroll', 10000);
-
+            initMusic();
             setInterval(updateServerInfo, 4000);
 
+            fetchPlayerCount();
+            setInterval(fetchPlayerCount, STATUS_POLL_MS);
+
             document.addEventListener('click', () => {
-                if (musicEnabled) {
-                    backgroundMusic.play().catch(e => console.log("Audio play failed:", e));
+                if (musicEnabled && backgroundMusic && backgroundMusic.paused) {
+                    if (!backgroundMusic.src) {
+                        playCurrentTrack();
+                    } else {
+                        backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
+                    }
                 }
             }, { once: true });
         });
