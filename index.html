@@ -808,7 +808,9 @@
         <span>Соблюдайте правила для лучшего опыта игры</span>
     </div>
 
-    <audio id="background-music" preload="auto" style="display: none;"></audio>
+    <audio id="background-music" loop preload="auto" style="display: none;">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const STATUS_ENDPOINT = "https://check.fazbearshunt.com/server_status";
@@ -830,46 +832,10 @@
             maxPlayers: 32
         };
 
-        const musicTracks = ['music1.mp3', 'music2.mp3'];
-        let playlist = [];
-        let playlistIndex = 0;
-
-        function shuffle(arr) {
-            const a = arr.slice();
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
-        }
-
-        function buildPlaylist() {
-            playlist = shuffle(musicTracks);
-            playlistIndex = 0;
-        }
-
-        function playCurrentTrack() {
-            if (!backgroundMusic || !musicEnabled) return;
-            backgroundMusic.src = playlist[playlistIndex];
-            backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано браузером"));
-        }
-
-        function nextTrack() {
-            playlistIndex++;
-            if (playlistIndex >= playlist.length) {
-                buildPlaylist();
-            }
-            playCurrentTrack();
-        }
-
         function initMusic() {
             const musicBtn = document.getElementById('music-btn');
             backgroundMusic = document.getElementById('background-music');
             backgroundMusic.volume = 0.3;
-
-            buildPlaylist();
-
-            backgroundMusic.addEventListener('ended', nextTrack);
 
             musicBtn.addEventListener('click', () => {
                 if (musicEnabled) {
@@ -881,16 +847,12 @@
                     musicEnabled = true;
                     musicBtn.classList.add('active');
                     musicBtn.classList.remove('muted');
-                    if (!backgroundMusic.src) {
-                        playCurrentTrack();
-                    } else {
-                        backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
-                    }
+                    backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
                 }
             });
 
             setTimeout(() => {
-                if (musicEnabled) playCurrentTrack();
+                if (musicEnabled) backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано браузером"));
             }, 1000);
         }
 
@@ -1070,11 +1032,7 @@
 
             document.addEventListener('click', () => {
                 if (musicEnabled && backgroundMusic && backgroundMusic.paused) {
-                    if (!backgroundMusic.src) {
-                        playCurrentTrack();
-                    } else {
-                        backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
-                    }
+                    backgroundMusic.play().catch(e => console.log("Не удалось воспроизвести:", e));
                 }
             }, { once: true });
         });
